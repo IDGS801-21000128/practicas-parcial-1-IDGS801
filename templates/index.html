@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+{% block container %}
+<h1>Calcular</h1>
+<div class="card">
+    <div class="card-body">
+        <form action="/resultado" method="POST">
+            <label id="n1">N1:</label>
+            <input type="text" name="n1"><br>
+            <label id="n2">N2:</label>
+            <input type="text" name="n2"><br>
+            <button class="btn" name="operation" value="+">+</button>
+            <button class="btn" name="operation" value="-">-</button>
+            <button class="btn" name="operation" value="*">*</button>
+            <button class="btn" name="operation" value="/">/</button> <br>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
