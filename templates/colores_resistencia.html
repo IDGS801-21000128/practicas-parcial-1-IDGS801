@@ -1,0 +1,92 @@
+{%extends "layout.html"%}
+{%block container%}
+{%import "_macros.html" as macros%}
+<form action="/resistencia" method="POST">
+    <div class="mb-3">
+      <label for="colorSelect1" class="form-label">Color 1:</label>
+      <select class="form-select" id="colorSelect1" name="b1">
+        <option value="0" >Negro</option>
+        <option value="1" >Cafe</option>
+        <option value="2" >Rojo</option>
+        <option value="3" >Naranja</option>
+        <option value="4" >Amarillo</option>
+        <option value="5" >Verde</option>
+        <option value="6" >Azul</option>
+        <option value="7" >Violeta</option>
+        <option value="8" >Gris</option>
+        <option value="9" >Blanco</option>
+      </select>
+    </div>
+    <div class="mb-3">
+      <label for="colorSelect2" class="form-label">Color 2:</label>
+      <select class="form-select" id="colorSelect2" name="b2">
+        <option value="0" >Negro</option>
+        <option value="1" >Cafe</option>
+        <option value="2" >Rojo</option>
+        <option value="3" >Naranja</option>
+        <option value="4" >Amarillo</option>
+        <option value="5" >Verde</option>
+        <option value="6" >Azul</option>
+        <option value="7" >Violeta</option>
+        <option value="8" >Gris</option>
+        <option value="9" >Blanco</option>
+      </select>
+    </div>
+    <div class="mb-3">
+      <label for="colorSelect3" class="form-label">Color 3:</label>
+      <select class="form-select" id="colorSelect3" name="b3">
+        <option value="1" >Negro</option>
+        <option value="10" >Cafe</option>   
+        <option value="100" >Rojo</option>
+        <option value="1000" >Naranja</option>
+        <option value="10000" >Amarillo</option>
+        <option value="100000" >Verde</option>
+        <option value="1000000" >Azul</option>
+        <option value="10000000" >Violeta</option>
+        <option value="100000000" >Gris</option>
+        <option value="1000000000" >Blanco</option>
+
+      </select>
+    </div>
+    <div class="mb-3">
+        <p>Tolerancia:</p>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="tol" id="goldenRadio" value="0.05">
+          <label class="form-check-label" for="oroRadio">Oro</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="tol" id="silverRadio" value="0.1">
+          <label class="form-check-label" for="plataRadio">Plata</label>
+        </div>
+      </div>
+    <button type="submit" class="btn btn-primary">Calcular</button>
+  </form>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Color 1</th>
+        <th>Color 2</th>
+        <th>Color 3</th>
+        <th>Tolerancia</th>
+        <th>Valor</th>
+        <th>Valor máximo</th>
+        <th>Valor mínimo</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <!-- Muestra los colores seleccionados y su tolerancia -->
+        <td style="background-color: {{color_eng1}}">{{ color1 }}</td>
+        <td style="background-color: {{color_eng2}};">{{ color2 }}</td>
+        <td style="background-color: {{ color_eng3 }}">{{ color3 }}</td>
+        <td style="background-color: {{ tol_eng }}">{{ tolerancia }}</td>
+        <!-- Muestra los valores calculados -->
+        <td>{{ valor }}</td>
+        <td>{{ valorMaximo }}</td>
+        <td>{{ valorMinimo }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+{%endblock%}
