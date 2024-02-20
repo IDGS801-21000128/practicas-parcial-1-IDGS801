@@ -1,0 +1,3 @@
+red:rojo
+blue:azul
+purple:purpura

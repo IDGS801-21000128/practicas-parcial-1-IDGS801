@@ -2,6 +2,7 @@ from flask import Flask, render_template, request
 import forms
 import coloresForms
 import math
+from io import open
 
 
 app=Flask(__name__)
@@ -56,44 +57,8 @@ def distancia():
 
 #Examen -----------------------------------------------
 
-color_map1 = {
-    '0': 'Negro',
-    '1': 'Cafe',
-    '2': 'Rojo',
-    '3': 'Naranja',
-    '4': 'Amarillo',
-    '5': 'Verde',
-    '6': 'Azul',
-    '7': 'Violeta',
-    '8': 'Gris',
-    '9': 'Blanco'
-}
 
-color_map2 = {
-    '1': 'Negro',
-    '10': 'Cafe',
-    '100': 'Rojo',
-    '1000': 'Naranja',
-    '10000': 'Amarillo',
-    '100000': 'Verde',
-    '1000000': 'Azul',
-    '10000000': 'Violeta',
-    '100000000': 'Gris',
-    '1000000000': 'Blanco'
-}
-color_english = {
-     'Negro': 'Black',
-     'Cafe': 'Brown',
-     'Rojo': 'Red',
-     'Naranja': 'Orange',
-     'Amarillo': 'Yellow',
-     'Verde': 'Green',
-     'Azul': 'Blue',
-     'Violeta': 'Violet',
-     'Gris': 'Gray',
-     'Blanco': 'White'
-}
-
+color_converter = coloresForms.ColorConverter()
 
 @app.route("/resistencia", methods=['GET','POST'])
 def calcularResistencia():
@@ -107,14 +72,14 @@ def calcularResistencia():
         b3 = int(campos.b3.data)
         tol = float(campos.tol.data)
 
-        color1 = color_map1.get(b1, 'Desconocido')
-        color2 = color_map1.get(b2, 'Desconocido')
-        color3 = color_map2.get(str(b3), 'Desconocido')
+        color1 = color_converter.get_color(b1, 1)
+        color2 = color_converter.get_color(b2, 1)
+        color3 = color_converter.get_color(str(b3), 2)
         tolerancia = 'Oro' if tol == 0.05 else 'Plata'
 
-        color_eng1 = color_english.get(color1, "Desconocido")
-        color_eng2 = color_english.get(color2, "Desconocido")
-        color_eng3 = color_english.get(color3, "Desconocido")
+        color_eng1 = color_converter.get_english_color(color1)
+        color_eng2 = color_converter.get_english_color(color2)
+        color_eng3 = color_converter.get_english_color(color3)
         tol_eng = '#BEB23F' if tolerancia == "Oro" else "#BABAB3"
 
         valor = int(b1 + b2) * b3
@@ -125,6 +90,53 @@ def calcularResistencia():
                                color3=color3, tolerancia=tolerancia, color_eng1=color_eng1, color_eng2=color_eng2, color_eng3=color_eng3,
                                tol_eng=tol_eng)
     return render_template("colores_resistencia.html")
+
+
+#-----------------------Parcial 2 traduccion
+
+@app.route("/traduccion", methods=['GET','POST'])
+def guardarTraduccion():
+    campos = forms.fieldsTraduccion(request.form)
+    campos2 = forms.searchTraduction(request.form)
+    ingles = ''
+    espanol = ''
+    result = ''
+    if request.method=='POST':
+        if "ingles" in request.form and "espanol" in request.form and campos.validate():
+            ingles = campos.ingles.data
+            espanol = campos.espanol.data
+            print(ingles)
+            archivo1 = open('archivo.txt', 'a')
+            archivo1.write(f"{ingles}:{espanol}\n")
+            archivo1.close()   
+        elif "busqueda" in request.form  and campos2.validate():
+            idioma = campos2.idioma.data
+            print(idioma)
+            busqueda = campos2.busqueda.data
+            with open("archivo.txt", "r") as file:
+                translations = [line.strip().split(":") for line in file]
+
+            translation = None
+            for pair in translations:
+                if pair[0] == busqueda and idioma == 'Ingles':
+                    translation = pair[1]
+                    result = translation
+                    break
+                elif pair[1] == busqueda and idioma == 'Español':
+                    translation = pair[0]
+                    result = translation
+                    break
+
+            if translation == None:
+                translation="Translation not found"
+
+    #if request.method=='POST' and campos.validate() and request.form["search"]:
+     #   idioma = campos.idioma.data
+      #  busqueda = campos.busqueda.data
+      #  archivo1 = open('archivo.txt', 'a')
+       # print()
+        
+    return render_template("traduccion.html", form=campos, ingles = ingles, espanol = espanol, form2=campos2, result = result)
 
 
 

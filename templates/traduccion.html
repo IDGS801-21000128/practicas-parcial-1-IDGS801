@@ -1,0 +1,32 @@
+{%extends "layout.html"%}
+{%block container%}
+{% import "_macros.html" as macros%}
+<form action="" method="POST" novalidate>
+    <div class="row control-group">
+        <div class="form-group col-xs-12 floating-label-form-group controls">
+            {{macros.camposNuevos(form.ingles, class="form-control")}}
+        </div>
+    </div>
+    <div class="row control-group">
+        <div class="form-group col-xs-12 floating-label-form-group controls">
+            {{macros.camposNuevos(form.espanol, class="form-control")}}
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Guardar</button>
+</form>
+
+<form action="" method="POST" novalidate>
+    <div class="row control-group">
+        <div class="form-group col-xs-12 floating-label-form-group controls">
+            <br>
+            {{ macros.render_radio_field(form2.idioma) }}
+            <br>
+            {{macros.camposNuevos(form2.busqueda, class="form-control")}}
+            <h3>Traducción:</h3>
+            <h4>{{result}}</h4>
+            <button type="submit" class=" btn btn-primary" value="search">Buscar</button>
+        </div>
+    </div>
+    
+</form>
+{%endblock%}
